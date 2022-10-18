@@ -12,12 +12,14 @@ public class Main {
         textDb.connect();
 
         TableWriter tableWriter = textDb.getTableWriter();
-        TestTableClass someDataToWrite = new TestTableClass();
-        someDataToWrite.name = "hello";
-        someDataToWrite.some_int_field = 3;
-        someDataToWrite.price = 3.0f;
-        someDataToWrite.timeOfAdding = LocalTime.now();
-        tableWriter.writeNew(someDataToWrite);
+
+        SecondTableClass someDataToWrite = new SecondTableClass();
+        someDataToWrite.isActive = false;
+        someDataToWrite.some_val = 3.1f;
+        someDataToWrite.namee = "hi";
+        someDataToWrite.setId(6);
+//        tableWriter.writeNew(someDataToWrite);
+        tableWriter.writeToID(someDataToWrite);
 
 
     }

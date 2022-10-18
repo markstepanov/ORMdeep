@@ -10,7 +10,6 @@ public class TestTableClass extends BaseClass{
     float price;
     @LocalTImeField
     LocalTime timeOfAdding;
-
     @IntegerField
     int some_int_field;
 }

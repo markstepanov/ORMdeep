@@ -12,5 +12,9 @@ public abstract class BaseClass {
         return this.id;
     }
 
+    public void setId(int id){
+        this.id = id;
+    }
+
 }
 
