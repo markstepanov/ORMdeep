@@ -1,3 +1,0 @@
-TestTableClass&[id:IDFIELD,name:STRINGFIELD,price:FLOATFIELD,timeOfAdding:LOCALTIMEFIELD,some_int_field:INTFIELD]
-nextIndex:1
-###

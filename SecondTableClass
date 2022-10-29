@@ -1,4 +1,6 @@
 SecondTableClass&[id:IDFIELD,some_val:FLOATFIELD,namee:STRINGFIELD,isActive:BOOLEANFIELD]
-nextIndex:7
+nextIndex:9
 ###
-6`3.1`hi`false
+6`3.1`mark`false
+7`20.0`hi`true
+8`42.0`qwe`true

@@ -1,25 +1,31 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TextFileORM {
 
     private ArrayList<BaseClass> tablesToInitialize;
     private TableFileFetcher tableFileFetcher;
     private TableWriter tableWriter;
+
+    private TableReader tableReader;
+
+    private  TableFIleIOController tableFIleIOController;
     private  TextDbTable[] dbTables;
 
     public TextFileORM() {
         this.tablesToInitialize = new ArrayList<>();
         this.tableFileFetcher = new TableFileFetcher();
-        this.tableWriter = new TableWriter(this.tableFileFetcher);
+        this.tableFIleIOController = new TableFIleIOController(this.tableFileFetcher);
+        this.tableWriter = new TableWriter(this.tableFIleIOController);
+        this.tableReader = new TableReader(this.tableFIleIOController);
+
     }
 
     public TableWriter getTableWriter(){
         return  this.tableWriter;
+    }
+
+    public  TableReader getTableReader(){
+        return this.tableReader;
     }
 
     public void addTable(BaseClass table) {
@@ -32,9 +38,6 @@ public class TextFileORM {
           this.tableFileFetcher.addTextDbTable(table);
        }
 
-//       for (TextDbTable table: dbTables){
-//           System.out.println(table.getName() + " " + table.getFile().getPath().toString());
-//       }
     }
 
 

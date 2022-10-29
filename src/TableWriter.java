@@ -8,16 +8,17 @@ import java.util.List;
 
 public class TableWriter {
 
-    private TableFileFetcher tableFileFetcher;
+    private  TableFIleIOController tableFIleIOController;
 
-    protected TableWriter(TableFileFetcher tableFileFetcher) {
-        this.tableFileFetcher = tableFileFetcher;
+    protected TableWriter(TableFIleIOController tableFIleIOController) {
+        this.tableFIleIOController= tableFIleIOController;
+
     }
 
     public <T> void writeNew(T tableToWrite) throws Exception {
         checkIfGenericIsBaseClassChild(tableToWrite);
-        TextDbTable textDbTable = createTextDbTable((BaseClass) tableToWrite);
-        File fileToWrite = getTableFile(textDbTable);
+        TextDbTable textDbTable = this.tableFIleIOController.createTextDbTable((BaseClass) tableToWrite);
+        File fileToWrite = this.tableFIleIOController.getTable(textDbTable).getFile();
         String record = createDbTableRecord((BaseClass) tableToWrite, textDbTable);
         writeNewRecord(fileToWrite, record);
     }
@@ -26,13 +27,13 @@ public class TableWriter {
     public <T> void writeToID(T tableToWrite) throws Exception {
         checkIfGenericIsBaseClassChild(tableToWrite);
         BaseClass currentTableToWrite = (BaseClass) tableToWrite;
-        TextDbTable textDbTable = createTextDbTable(currentTableToWrite);
+        TextDbTable textDbTable = this.tableFIleIOController.createTextDbTable(currentTableToWrite);
 
-        File fileToWrite = getTableFile(textDbTable);
-        ArrayList<String> fileContent = getFIleContent(fileToWrite);
+        File fileToWrite = this.tableFIleIOController.getTable(textDbTable).getFile();
+        ArrayList<String> fileContent = this.tableFIleIOController.getFIleContent(fileToWrite);
 
         int idToWrite = currentTableToWrite.getId();
-        int tableMaxIndex = getMaxIndex(fileContent);
+        int tableMaxIndex = tableFIleIOController.getMaxIndex(fileContent);
 
         String record = createDbTableRecord((BaseClass) tableToWrite, textDbTable);
         checkIfNewRecordHasLegitimateID(idToWrite, tableMaxIndex);
@@ -46,13 +47,13 @@ public class TableWriter {
 
         String splitter = "`";
         for (int i = 0; i < fileContent.size(); i++) {
-
             if (fileContent.get(i).split(splitter)[0].equals(String.valueOf(idToWrite))) {
 
                 fileContent.set(i, record);
                 FileWriter fileWriter = new FileWriter(fileToWrite);
                 fileWriter.write(String.join("\n", fileContent));
                 fileWriter.close();
+                break;
             }
         }
 
@@ -68,8 +69,8 @@ public class TableWriter {
     }
 
     private void writeNewRecord(File fileToWrite, String record) throws Exception {
-        ArrayList<String> fileContent = getFIleContent(fileToWrite);
-        int maxIndex = getMaxIndex(fileContent);
+        ArrayList<String> fileContent = this.tableFIleIOController.getFIleContent(fileToWrite);
+        int maxIndex = tableFIleIOController.getMaxIndex(fileContent);
         String newRecord = concatenateIDWithRecord(maxIndex, record);
         fileContent.add(newRecord);
         incrementTableFileNextIndex(fileContent);
@@ -84,13 +85,7 @@ public class TableWriter {
 
     }
 
-    private ArrayList<String> getFIleContent(File fileToWrite) throws Exception {
-        return new ArrayList<String>(Arrays.asList(Files.readString(fileToWrite.toPath()).split("\n")));
-    }
 
-    private int getMaxIndex(ArrayList<String> fileContent) {
-        return Integer.parseInt(fileContent.get(1).split(":")[1]);
-    }
 
     private void incrementTableFileNextIndex(List<String> fileContent) {
         String nextIndexLine = fileContent.get(1);
@@ -99,22 +94,8 @@ public class TableWriter {
         fileContent.set(1, newNextIndexLine);
     }
 
-    private File getTableFile(TextDbTable currentTextDbTable) throws Exception {
-        List<TextDbTable> existingDbTables = tableFileFetcher.getImmutableDbTables();
-
-        for (TextDbTable table : existingDbTables) {
-            if (table.generateMeta().equals(currentTextDbTable.generateMeta())) {
-                return table.getFile();
-            }
-        }
-        throw new Exception("There is no such table " + currentTextDbTable.getName());
-    }
 
 
-    private TextDbTable createTextDbTable(BaseClass tableClass) throws Exception {
-        TextDbTableFactory textDbTableFactory = new TextDbTableFactory();
-        return textDbTableFactory.assembleTable(tableClass);
-    }
 
     private <T> void checkIfGenericIsBaseClassChild(T tableToWrite) throws Exception {
         if (!(tableToWrite instanceof BaseClass)) {
