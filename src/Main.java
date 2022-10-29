@@ -12,8 +12,8 @@ public class Main {
 
 
 
-        TableReader tableReader = textDb.getTableReader();
-
+        TableRecordDeleter tableRecordDeleter = textDb.getTableRecordDeleter();
+        tableRecordDeleter.deleteRecordById(new SecondTableClass(), 8);
 
 
 

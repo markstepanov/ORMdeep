@@ -8,8 +8,14 @@ public class TextFileORM {
 
     private TableReader tableReader;
 
+    private TableRecordDeleter tableRecordDeleter;
+
     private  TableFIleIOController tableFIleIOController;
     private  TextDbTable[] dbTables;
+
+    public TableRecordDeleter getTableRecordDeleter() {
+        return tableRecordDeleter;
+    }
 
     public TextFileORM() {
         this.tablesToInitialize = new ArrayList<>();
@@ -17,6 +23,7 @@ public class TextFileORM {
         this.tableFIleIOController = new TableFIleIOController(this.tableFileFetcher);
         this.tableWriter = new TableWriter(this.tableFIleIOController);
         this.tableReader = new TableReader(this.tableFIleIOController);
+        this.tableRecordDeleter = new TableRecordDeleter(this.tableFIleIOController);
 
     }
 
