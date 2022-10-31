@@ -1,43 +1,28 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        TextFileORM textDb = new TextFileORM();
-        TestTableClass testTableClass = new TestTableClass();
-        SecondTableClass secondTableClass = new SecondTableClass();
+//        textfileorm textdb = new textfileorm();
+//        testtableclass testtableclass = new testtableclass();
+//        secondtableclass secondtableclass = new secondtableclass();
+//
+//
+//        textdb.addtable(testtableclass);
+//        textdb.addtable(secondtableclass);
+//        textdb.connect();
+//
+//
+//
+//        tablerecorddeleter tablerecorddeleter = textdb.gettablerecorddeleter();
+//        tableRecordDeleter.deleteRecordById(new SecondTableClass(), 8);
 
-
-        textDb.addTable(testTableClass);
-        textDb.addTable(secondTableClass);
-        textDb.connect();
-
-
-
-        TableRecordDeleter tableRecordDeleter = textDb.getTableRecordDeleter();
-        tableRecordDeleter.deleteRecordById(new SecondTableClass(), 8);
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
 
 
     }
 
 
-
-
-
-
-
-}
 
 
